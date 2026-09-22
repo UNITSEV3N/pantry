@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.pantry.fragments.Pantry;
+import com.example.pantry.fragments.Recipe;
+
 public class ViewPagerAdapter extends FragmentStateAdapter
 {
     public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity)
@@ -12,18 +15,17 @@ public class ViewPagerAdapter extends FragmentStateAdapter
         super(fragmentActivity);
     }
 
-    @NonNull
     @Override
     public Fragment createFragment(int position)
     {
         switch (position)
         {
             case 0:
-                return new PantryList();
+                return new Pantry();
             case 1:
-                return new ReciepyList();
-
-            default: return new PantryList();
+                return new Recipe();
+            default:
+                return new Pantry();
         }
     }
 
