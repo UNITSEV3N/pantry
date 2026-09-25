@@ -2,4 +2,7 @@
     <string name="app_name">pantry</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="quantity_format">Qty: %d</string>
+    <string name="expiry_format">Expires: %s</string>
+    <string name="date_added_format">Added: %s</string>
 </resources>
