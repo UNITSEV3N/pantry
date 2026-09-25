@@ -1,4 +1,4 @@
-package com.example.pantry;
+package com.example.pantry.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
