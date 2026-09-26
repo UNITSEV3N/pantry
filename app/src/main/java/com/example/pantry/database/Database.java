@@ -130,4 +130,22 @@ public class Database extends SQLiteOpenHelper
         cursor.close();
         return list;
     }
+
+    public int deleteIngredient(int id)
+    {
+        return getWritableDatabase().delete(T_INGREDIENT, I_ID + " = ?", new String[]{String.valueOf(id)});
+    }
+
+    public int updateIngredient(Ingredient item)
+    {
+        ContentValues values = new ContentValues();
+
+        values.put(I_NAME, item.getName());
+        values.put(I_BRAND, item.getBrand());
+        values.put(I_QUANTITY, item.getQuantity());
+        values.put(I_UNIT, item.getUnit());
+        values.put(I_EXPIRY, item.getExpiryDate() != null ? item.getExpiryDate().getTime() : null);
+
+        return getWritableDatabase().update(T_INGREDIENT, values, I_ID + " = ?", new String[]{String.valueOf(item.getId())});
+    }
 }

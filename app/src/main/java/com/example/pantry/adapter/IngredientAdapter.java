@@ -23,19 +23,29 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
 {
     private static final int EXPIRY_WARNING_DAYS = 3;
 
+    public interface OnItemClickListener
+    {
+        void onItemClick(Ingredient item);
+    }
+
     private final List<Ingredient> items;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+    private final OnItemClickListener listener;
 
-    public IngredientAdapter(List<Ingredient> items)
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
+    public IngredientAdapter(List<Ingredient> items, OnItemClickListener listener)
     {
         this.items = items;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_item_ingredient, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.fragment_item_ingredient, parent, false);
         return new ViewHolder(view);
     }
 
@@ -69,7 +79,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         else
         {
             holder.dateAdded.setVisibility(View.VISIBLE);
-            holder.dateAdded.setText(holder.itemView.getContext().getString(R.string.date_added_format, dateFormat.format(item.getDate())));
+            holder.dateAdded.setText(holder.itemView.getContext()
+                    .getString(R.string.date_added_format, dateFormat.format(item.getDate())));
         }
 
         if (item.getExpiryDate() == null)
@@ -79,9 +90,29 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         else
         {
             holder.expiry.setVisibility(View.VISIBLE);
-            holder.expiry.setText(holder.itemView.getContext().getString(R.string.expiry_format, dateFormat.format(item.getExpiryDate())));
+            holder.expiry.setText(holder.itemView.getContext()
+                    .getString(R.string.expiry_format, dateFormat.format(item.getExpiryDate())));
             holder.expiry.setTextColor(getExpiryColor(item.getExpiryDate()));
         }
+
+        holder.itemView.setActivated(position == selectedPosition);
+
+        holder.itemView.setOnClickListener(v ->
+        {
+            int clickedPosition = holder.getBindingAdapterPosition();
+            if (clickedPosition == RecyclerView.NO_POSITION) return;
+
+            int previousSelected = selectedPosition;
+            selectedPosition = (selectedPosition == clickedPosition) ? RecyclerView.NO_POSITION : clickedPosition;
+
+            if (previousSelected != RecyclerView.NO_POSITION) notifyItemChanged(previousSelected);
+            if (selectedPosition != RecyclerView.NO_POSITION) notifyItemChanged(selectedPosition);
+
+            if (listener != null)
+            {
+                listener.onItemClick(selectedPosition == RecyclerView.NO_POSITION ? null : items.get(selectedPosition));
+            }
+        });
     }
 
     private int getExpiryColor(Date expiryDate)
@@ -134,7 +165,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     {
         items.clear();
         items.addAll(newItems);
+        selectedPosition = RecyclerView.NO_POSITION;
         notifyDataSetChanged();
+    }
+
+    public void clearSelection()
+    {
+        int previousSelected = selectedPosition;
+        selectedPosition = RecyclerView.NO_POSITION;
+        if (previousSelected != RecyclerView.NO_POSITION) notifyItemChanged(previousSelected);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
