@@ -8,6 +8,7 @@ public class Ingredient
     private String name;
     private String brand;
     private int quantity;
+    private String unit;
     private Date date;
     private Date expiryDate;
 
@@ -16,12 +17,13 @@ public class Ingredient
 
     }
 
-    public Ingredient(int id, String name, String brand, int quantity, Date date_added, Date expiryDate)
+    public Ingredient(int id, String name, String brand, int quantity, String unit, Date date_added, Date expiryDate)
     {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.quantity = quantity;
+        this.unit = unit;
         this.date = date_added;
         this.expiryDate = expiryDate;
     }
@@ -74,6 +76,16 @@ public class Ingredient
     public void setQuantity(int quantity)
     {
         this.quantity = quantity;
+    }
+
+    public void setUnit(String unit)
+    {
+        this.unit = unit;
+    }
+
+    public String getUnit()
+    {
+        return unit;
     }
 
     public Date getExpiryDate()

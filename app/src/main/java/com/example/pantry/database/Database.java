@@ -23,6 +23,7 @@ public class Database extends SQLiteOpenHelper
     private static final String I_NAME = "name";
     private static final String I_BRAND = "brand";
     private static final String I_QUANTITY = "quantity";
+    private static final String I_UNIT = "unit";
     private static final String I_DATE = "date_added";
     private static final String I_EXPIRY = "expiry_date";
 
@@ -46,6 +47,7 @@ public class Database extends SQLiteOpenHelper
                 + I_NAME + " TEXT NOT NULL, "
                 + I_BRAND + " TEXT, "
                 + I_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
+                + I_UNIT + " TEXT, "                        // NEW
                 + I_DATE + " INTEGER NOT NULL, "
                 + I_EXPIRY + " INTEGER)");
 
@@ -86,6 +88,7 @@ public class Database extends SQLiteOpenHelper
         values.put(I_NAME, item.getName());
         values.put(I_BRAND, item.getBrand());
         values.put(I_QUANTITY, item.getQuantity());
+        values.put(I_UNIT, item.getUnit());                 // NEW
         values.put(I_DATE, item.getDate().getTime());
         values.put(I_EXPIRY, item.getExpiryDate() != null ? item.getExpiryDate().getTime() : null);
 
@@ -110,12 +113,16 @@ public class Database extends SQLiteOpenHelper
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(I_NAME));
                 String brand = cursor.getString(cursor.getColumnIndexOrThrow(I_BRAND));
                 int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(I_QUANTITY));
+
+                int unitColIndex = cursor.getColumnIndexOrThrow(I_UNIT);              // NEW
+                String unit = cursor.isNull(unitColIndex) ? null : cursor.getString(unitColIndex);
+
                 long dateAdded = cursor.getLong(cursor.getColumnIndexOrThrow(I_DATE));
 
                 int expiryColIndex = cursor.getColumnIndexOrThrow(I_EXPIRY);
                 Date expiry = cursor.isNull(expiryColIndex) ? null : new Date(cursor.getLong(expiryColIndex));
 
-                list.add(new Ingredient(id, name, brand, quantity, new Date(dateAdded), expiry));
+                list.add(new Ingredient(id, name, brand, quantity, unit, new Date(dateAdded), expiry));
             }
             while (cursor.moveToNext());
         }

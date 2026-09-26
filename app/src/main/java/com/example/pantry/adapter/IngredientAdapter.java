@@ -35,8 +35,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item_ingredient, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_item_ingredient, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,8 +56,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             holder.brand.setText(item.getBrand());
         }
 
-        holder.quantity.setText(holder.itemView.getContext()
-                .getString(R.string.quantity_format, item.getQuantity()));
+        String unit = item.getUnit();
+        String quantityText = TextUtils.isEmpty(unit)
+                ? "x" + item.getQuantity()
+                : "x" + item.getQuantity() + " " + unit;
+        holder.quantity.setText(quantityText);
 
         if (item.getDate() == null)
         {
@@ -67,8 +69,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         else
         {
             holder.dateAdded.setVisibility(View.VISIBLE);
-            holder.dateAdded.setText(holder.itemView.getContext()
-                    .getString(R.string.date_added_format, dateFormat.format(item.getDate())));
+            holder.dateAdded.setText(holder.itemView.getContext().getString(R.string.date_added_format, dateFormat.format(item.getDate())));
         }
 
         if (item.getExpiryDate() == null)
@@ -78,8 +79,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         else
         {
             holder.expiry.setVisibility(View.VISIBLE);
-            holder.expiry.setText(holder.itemView.getContext()
-                    .getString(R.string.expiry_format, dateFormat.format(item.getExpiryDate())));
+            holder.expiry.setText(holder.itemView.getContext().getString(R.string.expiry_format, dateFormat.format(item.getExpiryDate())));
             holder.expiry.setTextColor(getExpiryColor(item.getExpiryDate()));
         }
     }
@@ -134,6 +134,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     {
         items.clear();
         items.addAll(newItems);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder

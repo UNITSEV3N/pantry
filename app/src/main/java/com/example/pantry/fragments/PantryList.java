@@ -60,6 +60,7 @@ public class PantryList extends Fragment
         EditText Name = dialogView.findViewById(R.id.IngredientName);
         EditText Brand = dialogView.findViewById(R.id.IngredientBrand);
         EditText Quantity = dialogView.findViewById(R.id.IngredientQuantity);
+        EditText Unit = dialogView.findViewById(R.id.IngredientUnit);
         EditText Expiry = dialogView.findViewById(R.id.IngredientExpiry);
 
         Expiry.setOnClickListener(v -> showDatePicker(Expiry));
@@ -77,6 +78,7 @@ public class PantryList extends Fragment
                     String name = Name.getText().toString().trim();
                     String brand = Brand.getText().toString().trim();
                     String quantityStr = Quantity.getText().toString().trim();
+                    String unit = Unit.getText().toString().trim();
 
                     if (TextUtils.isEmpty(name))
                     {
@@ -87,13 +89,22 @@ public class PantryList extends Fragment
                     int quantity = 0;
                     if (!TextUtils.isEmpty(quantityStr))
                     {
-                        quantity = Integer.parseInt(quantityStr);
+                        try
+                        {
+                            quantity = (int) Double.parseDouble(quantityStr);
+                        }
+                        catch (NumberFormatException e)
+                        {
+                            Quantity.setError("Enter a valid number");
+                            return;
+                        }
                     }
 
                     Ingredient item = new Ingredient();
                     item.setName(name);
                     item.setBrand(brand);
                     item.setQuantity(quantity);
+                    item.setUnit(unit);
                     item.setDate(new Date());
                     item.setExpiryDate(selectedExpiryDate);
 
@@ -127,8 +138,6 @@ public class PantryList extends Fragment
 
                     selectedExpiryDate = picked.getTime();
                     target.setText(displayFormat.format(selectedExpiryDate));
-
-                    Toast.makeText(requireContext(), "Picked: " + selectedExpiryDate, Toast.LENGTH_SHORT).show();
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
