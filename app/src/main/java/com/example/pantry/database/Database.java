@@ -36,7 +36,7 @@ public class Database extends SQLiteOpenHelper
     private static final String R_INSTR = "instructions";
     private static final String R_DATE = "date_added";
 
-    // Recipe ingredients (one row per ingredient a recipe needs)
+    // Recipe ingredients
     private static final String T_RECIPE_INGREDIENT = "recipe_ingredient";
     private static final String RI_ID = "id";
     private static final String RI_RECIPE_ID = "recipe_id";
