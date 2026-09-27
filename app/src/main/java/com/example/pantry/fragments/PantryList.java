@@ -38,7 +38,6 @@ public class PantryList extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         database = new Database(requireContext());
-        // database.resetDatabase();
 
         View view = inflater.inflate(R.layout.fragment_pantry_list, container, false);
         view.findViewById(R.id.addFloatingButton).setOnClickListener(v -> showIngredientDialog(null));
@@ -50,6 +49,9 @@ public class PantryList extends Fragment
 
         adapter = new IngredientAdapter(database.getAllIngredients(), item -> selectedIngredient = item);
         recyclerView.setAdapter(adapter);
+
+        // add listener/event
+        getParentFragmentManager().setFragmentResultListener("database_reset", getViewLifecycleOwner(), (requestKey, bundle) -> refreshList());
 
         return view;
     }
@@ -84,6 +86,7 @@ public class PantryList extends Fragment
 
         Toast.makeText(requireContext(), name + " removed", Toast.LENGTH_SHORT).show();
         selectedIngredient = null;
+
         refreshList();
     }
 
@@ -221,5 +224,6 @@ public class PantryList extends Fragment
     {
         selectedIngredient = null;
         adapter.setItems(database.getAllIngredients());
+        getParentFragmentManager().setFragmentResult("pantry_changed", Bundle.EMPTY);
     }
 }

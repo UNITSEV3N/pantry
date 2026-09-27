@@ -9,21 +9,27 @@ public class Recipe
     private int id;
     private String name;
     private String instructions;
-    private Date date_added;
+    private Date date;
+    private List<RecipeIngredient> ingredients = new ArrayList<>();
 
-    public Recipe(int id, String name, String instructions, Date date_added)
+    public Recipe()
+    {
+
+    }
+
+    public Recipe(int id, String name, String instructions, Date date, List<RecipeIngredient> ingredients)
     {
         this.id = id;
         this.name = name;
         this.instructions = instructions;
-        this.date_added = date_added;
+        this.date = date;
+        this.ingredients = ingredients;
     }
 
     public int getId()
     {
         return id;
     }
-
     public void setId(int id)
     {
         this.id = id;
@@ -33,7 +39,6 @@ public class Recipe
     {
         return name;
     }
-
     public void setName(String name)
     {
         this.name = name;
@@ -43,19 +48,26 @@ public class Recipe
     {
         return instructions;
     }
-
     public void setInstructions(String instructions)
     {
         this.instructions = instructions;
     }
 
-    public Date getDate_added()
+    public Date getDate()
     {
-        return date_added;
+        return date;
+    }
+    public void setDate(Date date)
+    {
+        this.date = date;
     }
 
-    public void setDate_added(Date date_added)
+    public List<RecipeIngredient> getIngredients()
     {
-        this.date_added = date_added;
+        return ingredients;
+    }
+    public void setIngredients(List<RecipeIngredient> ingredients)
+    {
+        this.ingredients = ingredients;
     }
 }
