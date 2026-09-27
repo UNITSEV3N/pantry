@@ -99,6 +99,10 @@ public class Database extends SQLiteOpenHelper
         SQLiteDatabase db = getWritableDatabase();
         clearAllTables(db);
         onCreate(db);
+
+        // Re-seed ingredients
+        seedRecipes(db);
+        seedIngredients(db);
     }
 
     // Clear only ingredients
