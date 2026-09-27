@@ -38,6 +38,12 @@ public class RecipeList extends Fragment
         database = new Database(requireContext());
         getParentFragmentManager().setFragmentResultListener("pantry_changed", this,
                 (requestKey, bundle) -> refreshRecipes());
+
+        getParentFragmentManager().setFragmentResultListener("pantry_changed", this,
+                (requestKey, bundle) -> {
+                    android.util.Log.d("PantryDebug", "RecipeList received pantry_changed");
+                    refreshRecipes();
+                });
     }
 
     @Override

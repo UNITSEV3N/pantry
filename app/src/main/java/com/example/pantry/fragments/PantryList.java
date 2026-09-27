@@ -224,6 +224,7 @@ public class PantryList extends Fragment
     {
         selectedIngredient = null;
         adapter.setItems(database.getAllIngredients());
+        android.util.Log.d("PantryDebug", "Broadcasting pantry_changed");
         getParentFragmentManager().setFragmentResult("pantry_changed", Bundle.EMPTY);
     }
 }
